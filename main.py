@@ -52,8 +52,8 @@ if __name__ == '__main__':
     else:
         sendTitle = "预约失败"
         
+    print(sendTitle)
+    print(info)
+
     if config["notification"]["wechat"] == "True":
-        print(sendTitle)
-        print(info)
-    else:
-        print("no")
+        wechat_notification(argconf.KEY, sendTitle, info)
