@@ -1,5 +1,3 @@
-from turtle import title
-from numpy import tile
 import requests
 from Const import RequestURL
 from busClient import BusClient
