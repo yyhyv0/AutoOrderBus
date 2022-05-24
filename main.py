@@ -21,6 +21,9 @@ if __name__ == '__main__':
     parser.add_argument('--KEY', type=str)
     argconf = parser.parse_args()
 
+    print(argconf.KEY)
+    exit()
+
     config = configparser.ConfigParser()
     config.read("config.ini",encoding = "utf-8")
 
