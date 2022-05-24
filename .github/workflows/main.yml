@@ -31,6 +31,7 @@ jobs:
       - name: 'Install requirements'
         run: 
           pip install requests
+          pip install numpy
         
       - name: 'Working'
         run:
