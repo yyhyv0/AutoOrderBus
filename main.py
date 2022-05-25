@@ -30,7 +30,8 @@ if __name__ == '__main__':
     client = BusClient()
     client.login(user, password)
     busList = client.retrieveBusInfo()
-    now = datetime.now(timezone(timedelta(hours=+8)))
+    now = datetime.now(timezone(timedelta(hours=+8))).replace(tzinfo=None)
+    print(now)
 
     success = busList != []
 

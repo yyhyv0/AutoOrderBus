@@ -26,7 +26,7 @@ class BusClient():
                                         "randCode":"",
                                         "smsCode":"",
                                         "otpCode":"",
-                                        "redirUrl": RequestURL.IaaaSsoUrl
+                                        "redirUrl": RequestURL.IaaaRedirUrl
                                     }
                                     ).json()
 
