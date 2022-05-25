@@ -1,31 +1,35 @@
+from sqlite3 import paramstyle
 import requests
 from Const import RequestURL
 from busClient import BusClient
 import configparser
 from datetime import datetime
-from argparse import ArgumentParser
+import os
 
 def wechat_notification(key, title, info):
-    requests.get(
+    responseBody = requests.get(
         url = RequestURL.wechatNotificationUrl % key,
         params={
-            "title":title,
+            "text":title,
             "desp":info
         }
     )
+    if responseBody.text == 'ok':
+        print('微信提醒发送成功')
+    else:
+        print('微信提醒发送失败，返回信息：')
+        print(responseBody.text)
 
 if __name__ == '__main__':    
-    parser = ArgumentParser()
-    parser.add_argument('--USER', type=str)
-    parser.add_argument('--PASSWORD', type=str)
-    parser.add_argument('--KEY', type=str)
-    argconf = parser.parse_args()
 
     config = configparser.ConfigParser()
     config.read("config.ini",encoding = "utf-8")
 
+    user = os.getenv("USER")
+    password = os.getenv("PASSWORD")    
+
     client = BusClient()
-    client.login(argconf.USER,argconf.PASSWORD)
+    client.login(user, password)
     busList = client.retrieveBusInfo()
     now = datetime.now()
 
@@ -34,7 +38,11 @@ if __name__ == '__main__':
     for item in busList:
         if config["order"]["morning"] in item["action_stime"] or config["order"]["evening"] in item["action_stime"]:
             appoint_stime = datetime.strptime(item["appoint_stime"], "%Y-%m-%d %H:%M")
-            if item["is_appoint"] == 0 and now >= appoint_stime:
+            if item["is_appoint"] != 0:
+                print("校车" + item["action_stime"] + "已预约")
+            elif now < appoint_stime:
+                print("校车" + item["action_stime"] + "未开放，预约时间" + item["appoint_stime"])
+            else:
                 # 预约校车
                 print("正在预约校车"+item["action_stime"]+"...")
                 if not client.orderBus(int(item["id"])):
@@ -52,8 +60,12 @@ if __name__ == '__main__':
     else:
         sendTitle = "预约失败"
         
+    print('-'*60)
     print(sendTitle)
     print(info)
+    print('-'*60)
 
     if config["notification"]["wechat"] == "True":
-        wechat_notification(argconf.KEY, sendTitle, info)
+        sendkey = os.getenv('SENDKEY')
+        print("正在发送微信提醒...")
+        wechat_notification(sendkey, sendTitle, info)

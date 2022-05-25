@@ -14,11 +14,11 @@
 | Name     |                Description                 |
 | -------- | :----------------------------------------: |
 | USER |                 学号(必须)                 |
-| PASSWORD |                 密码(必须)                 |
-| SENDKEY |                 [server酱](https://sct.ftqq.com/)SENDKEY,不需要推送时随便写个数字                 |
+| PASSWORD|                 密码(必须)                 |
+| SENDKEY |[虾推啥](https://http://www.xtuis.cn/)SENDKEY,不需要推送时随便写个数字  |
 
 #### 3.配置微信推送(可选)
-使用[server酱](https://sct.ftqq.com/)推送预约信息，需要将[配置文件](https://github.com/yyhyv0/AutoOrderBus/blob/master/config.ini)的notification改为True，同时在SECRET中加入SENDKEY.
+使用[虾推啥](https://http://www.xtuis.cn/)推送预约信息，需要将[配置文件](https://github.com/yyhyv0/AutoOrderBus/blob/master/config.ini)的notification改为True，同时在SECRET中加入SENDKEY.
 
 #### 4.配置workflow
 **actions->select workflow->AutoOrderBus**

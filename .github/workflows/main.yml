@@ -35,6 +35,6 @@ jobs:
         
       - name: 'Working'
         run:
-          python main.py --USER ${{secrets.USER}} --PASSWORD ${{secrets.PASSWORD}} --KEY ${{secrets.SENDKEY}}
+          python main.py
           
 
