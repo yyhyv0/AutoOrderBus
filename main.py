@@ -1,9 +1,8 @@
-from sqlite3 import paramstyle
 import requests
 from Const import RequestURL
 from busClient import BusClient
 import configparser
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 import os
 
 def wechat_notification(key, title, info):
@@ -27,11 +26,11 @@ if __name__ == '__main__':
 
     user = os.getenv("USERNAME")
     password = os.getenv("PASSWORD")    
-    
+
     client = BusClient()
     client.login(user, password)
     busList = client.retrieveBusInfo()
-    now = datetime.now()
+    now = datetime.now(timezone(timedelta(hours=+8)))
 
     success = busList != []
 
