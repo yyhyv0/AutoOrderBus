@@ -25,11 +25,9 @@ if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read("config.ini",encoding = "utf-8")
 
-    user = os.getenv("USER")
+    user = os.getenv("USERNAME")
     password = os.getenv("PASSWORD")    
-    print(user)
-    print(password)
-
+    
     client = BusClient()
     client.login(user, password)
     busList = client.retrieveBusInfo()

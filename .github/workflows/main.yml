@@ -34,6 +34,10 @@ jobs:
           pip install numpy
         
       - name: 'Working'
+        env:
+          USERNAME: ${{ secrets.USER }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          SENDKEY: ${{ secrets.SENDKEY }}
         run:
           python main.py
           
