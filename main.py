@@ -27,6 +27,8 @@ if __name__ == '__main__':
 
     user = os.getenv("USER")
     password = os.getenv("PASSWORD")    
+    print(user)
+    print(password)
 
     client = BusClient()
     client.login(user, password)
