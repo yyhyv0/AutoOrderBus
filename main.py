@@ -24,10 +24,15 @@ if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read("config.ini",encoding = "utf-8")
 
+    if config["order"]["location"] == "圆明园":
+        appId = 41
+    else:
+        appId = 40
+
     user = os.getenv("USERNAME")
     password = os.getenv("PASSWORD")    
 
-    client = BusClient()
+    client = BusClient(appId)
     client.login(user, password)
     busList = client.retrieveBusInfo()
     now = datetime.now(timezone(timedelta(hours=+8))).replace(tzinfo=None)

@@ -23,4 +23,4 @@
 #### 4.配置workflow
 **actions->select workflow->AutoOrderBus**
 
-注：默认在每天15:05分预约校车，如需修改请按格式要求修改[main.yml](https://github.com/yyhyv0/AutoOrderBus/blob/master/.github/workflows/main.yml)文件中的**on.schedule.cron**项。
+注：默认在每天15:00分预约校车，如需修改请按格式要求修改[main.yml](https://github.com/yyhyv0/AutoOrderBus/blob/master/.github/workflows/main.yml)文件中的**on.schedule.cron**项。

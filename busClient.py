@@ -1,34 +1,42 @@
 import requests
 from Const import RequestURL
 from numpy import random
+from urllib import parse
+import traceback
 
 class BusClient():
 
     __headers = {
-                "Accept": "text/plain, */*; q=0.01",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Accept-Language": "zh-CN,zh;q=0.9",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36"
+                # "Accept": "text/plain, */*; q=0.01",
+                # "Accept-Encoding": "gzip, deflate, br",
+                # "Accept-Language": "zh-CN,zh;q=0.9",
+                # "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36"
             }
 
-    def __init__(self, headers = __headers):
+    def __init__(self, appId = 40,headers = __headers):
         self.__session = requests.session()
+        self.appId = appId
 
     def login(self, user, password, headers = __headers):
         for i in range(2):
             try:
+                payload={
+                    "appid": "yywd",
+                    "userName": user,
+                    "password": password,
+                    "randCode":"",
+                    "smsCode":"",
+                    "otpCode":"",
+                    "redirUrl": RequestURL.IaaaRedirUrlPart + str(self.appId)
+                }
+                payload=parse.urlencode(payload)
+
+                headers["Content-Type"] = "application/x-www-form-urlencoded"
                 requestBody = self.__session.post(url=RequestURL.IaaaLoginUrl,
                                     headers=headers,
-                                    data={
-                                        "appid": "yywd",
-                                        "userName": user,
-                                        "password": password,
-                                        "randCode":"",
-                                        "smsCode":"",
-                                        "otpCode":"",
-                                        "redirUrl": RequestURL.IaaaRedirUrl
-                                    }
+                                    data=payload
                                     ).json()
+                del headers["Content-Type"]
 
                 if requestBody["success"] != True:
                     print(requestBody["errors"]["msg"])
@@ -48,6 +56,8 @@ class BusClient():
                 print("登录成功")
                 return
             except Exception:
+                headers.pop('Content-Type', None)
+                traceback.print_exc()
                 print("登录异常，正在重试")
 
     def retrieveBusInfo(self, headers = __headers) -> list:
@@ -55,14 +65,14 @@ class BusClient():
         try:
             responseBody = self.__session.get(url=RequestURL.BusRetrieveApi,
                             headers=headers,
-                            params={"id":40}
+                            params={"id":self.appId}
                             ).json()
 
             busList = responseBody["d"]["list"]
         except Exception:
             busList = []
+            traceback.print_exc()
             print("查询校车信息出现异常")
-            print(Exception)
 
         return busList
 
@@ -84,6 +94,6 @@ class BusClient():
                 print("预约校车失败")
                 return False
         except Exception:
+            traceback.print_exc()
             print("预约校车出现异常")
-            print(Exception)
             return False
